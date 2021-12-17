@@ -13,11 +13,11 @@ import static org.quartz.SimpleScheduleBuilder.*;
 public class AlertRabbit {
 
     public static Integer load() throws IOException {
-        final Integer[] res = {0};
+        final int[] res = {0};
         try (BufferedReader rd = new BufferedReader(new FileReader("src/main/resources/rabbit.properties"))) {
             rd.lines().forEach(e -> {
                 String[] el = e.split("=");
-                if (el.length == 2) {
+                if (!el[1].isEmpty() && el.length == 2) {
                     res[0] = Integer.parseInt(el[1]);
                 } else {
                     throw  new IllegalArgumentException();
