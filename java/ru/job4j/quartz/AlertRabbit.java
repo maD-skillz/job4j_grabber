@@ -9,10 +9,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import static java.lang.System.getProperty;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
 
@@ -22,22 +25,28 @@ public class AlertRabbit {
 
     private static Connection cn;
 
-    public static void init() {
-        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("src/main/resources/rabbit.properties")) {
-            Properties config = new Properties();
+    public static Properties init() {
+        Properties config = new Properties();
+        try (InputStream in = AlertRabbit.class.getClassLoader().
+                getResourceAsStream("src/main/resources/rabbit.properties")) {
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("username"),
-                    config.getProperty("password")
-            );
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+        return config;
     }
 
-    public static Integer load() throws IOException {
+    public static Connection getCon(Properties properties) throws SQLException {
+        cn = DriverManager.getConnection(
+                getProperty("url"),
+                getProperty("username"),
+                getProperty("password")
+        );
+        return cn;
+    }
+
+    public static Integer getInterval() throws IOException {
         try (BufferedReader rd = new BufferedReader(new FileReader("src/main/resources/rabbit.properties"))) {
             rd.lines().forEach(e -> {
                 if (e.contains("interval")) {
@@ -54,27 +63,32 @@ public class AlertRabbit {
     }
 
     public static void main(String[] args) throws IOException {
-        try {
-            List<Long> store = new ArrayList<>();
-            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-            scheduler.start();
-            init();
-            JobDataMap data = new JobDataMap();
-            data.put("INSERT INTO rabbit(name) VALUES(white);", store);
-            JobDetail job = JobBuilder.newJob(Rabbit.class)
-                    .usingJobData(data)
-                    .build();
-            SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(load())
-                    .repeatForever();
-            Trigger trigger = newTrigger()
-                    .startNow()
-                    .withSchedule(times)
-                    .build();
-            scheduler.scheduleJob(job, trigger);
-            Thread.sleep(10000);
-            scheduler.shutdown();
-        } catch (SchedulerException | InterruptedException se) {
+        Properties initCon = init();
+        try (Connection connection = getCon(initCon)) {
+            try (Statement statement = connection.createStatement()) {
+                String sql = String.format(
+                        "INSERT INTO rabbit(name) VALUES(white);"
+                );
+                Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+                scheduler.start();
+                JobDataMap data = new JobDataMap();
+                data.put("connection", connection);
+                JobDetail job = JobBuilder.newJob(Rabbit.class)
+                        .usingJobData(data)
+                        .build();
+                SimpleScheduleBuilder times = simpleSchedule()
+                        .withIntervalInSeconds(getInterval())
+                        .repeatForever();
+                statement.execute(sql);
+                Trigger trigger = newTrigger()
+                        .startNow()
+                        .withSchedule(times)
+                        .build();
+                scheduler.scheduleJob(job, trigger);
+                Thread.sleep(10000);
+                scheduler.shutdown();
+            }
+        } catch (SchedulerException | InterruptedException | SQLException se) {
             se.printStackTrace();
         }
     }
