@@ -9,18 +9,15 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Properties;
 
-import static java.lang.System.getProperty;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit {
 
-    private final static LocalDateTime TIME = LocalDateTime.now();
-
     public static Properties init() {
         Properties config = new Properties();
         try (InputStream in = AlertRabbit.class.getClassLoader().
-                getResourceAsStream("src/main/resources/rabbit.properties")) {
+                getResourceAsStream("rabbit.properties")) {
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
         } catch (Exception e) {
@@ -31,9 +28,9 @@ public class AlertRabbit {
 
     public static Connection getCon(Properties properties) throws SQLException {
         return DriverManager.getConnection(
-                getProperty("url"),
-                getProperty("username"),
-                getProperty("password")
+                properties.getProperty("url"),
+                properties.getProperty("username"),
+                properties.getProperty("password")
         );
     }
 
@@ -48,7 +45,8 @@ public class AlertRabbit {
                         .usingJobData(data)
                         .build();
                 SimpleScheduleBuilder times = simpleSchedule()
-                        .withIntervalInSeconds(connection.getNetworkTimeout())
+                        .withIntervalInSeconds(
+                                Integer.parseInt(initCon.getProperty("rabbit.interval")))
                         .repeatForever();
                 Trigger trigger = newTrigger()
                         .startNow()
@@ -75,7 +73,8 @@ public class AlertRabbit {
                     "INSERT INTO rabbit(name, created_date) VALUES(?, ?);",
                     Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, "White");
-                ps.setTimestamp(2, Timestamp.valueOf(TIME));
+                ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+                ps.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
