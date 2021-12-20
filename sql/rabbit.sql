@@ -1,5 +1,5 @@
 create table rabbit (
 	id serial primary key,
-	text name,
+	name text,
 	created_date timestamp
 );
