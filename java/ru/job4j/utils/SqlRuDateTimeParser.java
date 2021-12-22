@@ -1,11 +1,7 @@
 package ru.job4j.utils;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import org.jsoup.nodes.Document;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
@@ -21,29 +17,6 @@ public class SqlRuDateTimeParser implements DateTimeParser {
         return cal.getTime().toString();
     }
 
-    public static List<String> getDate() throws Exception {
-        List<String> rsl = new ArrayList<>();
-        Document document = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
-        Elements row = document.select(".postslisttopic");
-        for (Element td : row) {
-            Element child = td.parent().child(5);
-            if (child.text().contains("вчера")) {
-                String[] date = child.text().split(",");
-                String str = yestDay() + date[1];
-                rsl.add(str);
-            } else if (child.text().contains("сегодня")) {
-                String[] date = child.text().split(",");
-                String str = today() + date[1];
-                rsl.add(str);
-            } else {
-                String[] date = child.text().split(" ");
-             String[] year = date[2].split(",");
-                rsl.add("20" + year[0] + "-" + MONTHS.get(date[1]) + "-" + date[0] + "T" + date[3]);
-            }
-        }
-        return rsl;
-    }
-
     private static final Map<String, String> MONTHS = Map.ofEntries(Map.entry("янв", "1"), Map.entry("фев", "2"),
             Map.entry("мар", "3"), Map.entry("апр", "4"), Map.entry("май", "5"), Map.entry("июн", "6"),
             Map.entry("июл", "7"), Map.entry("авг", "8"), Map.entry("сен", "9"), Map.entry("окт", "10"),
@@ -51,9 +24,21 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
     @Override
     public LocalDateTime parse(String parse) throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy, HH:mm");
+        String yesterday;
+        String today;
+        String[] date;
         LocalDateTime ldt = null;
-        for (String i : getDate()) {
-            ldt = LocalDateTime.parse(i);
+        if (parse.contains("вчера")) {
+            date = parse.split(",");
+            yesterday = yestDay() + date[1];
+            ldt = LocalDateTime.parse(yesterday, formatter);
+        } else if (parse.contains("сегодня")) {
+            date = parse.split(",");
+            today = today() + date[1];
+            ldt = LocalDateTime.parse(today, formatter);
+        } else {
+            ldt = LocalDateTime.parse(parse, formatter);
         }
         return ldt;
     }
