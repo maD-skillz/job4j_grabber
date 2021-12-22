@@ -7,7 +7,9 @@ import org.jsoup.select.Elements;
 
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
-        Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
+        for (int i = 1; i <= 5; i++) {
+            String sheet = Integer.toString(i);
+        Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + sheet).get();
         Elements row = doc.select(".postslisttopic");
         for (Element td : row) {
             Element href = td.child(0);
@@ -15,6 +17,7 @@ public class SqlRuParse {
             System.out.println(href.attr("href"));
             System.out.println(href.text());
             System.out.println(time.text());
+        }
         }
     }
 }
