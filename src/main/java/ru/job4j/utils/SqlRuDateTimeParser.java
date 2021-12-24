@@ -12,28 +12,25 @@ public class SqlRuDateTimeParser implements DateTimeParser {
             Map.entry("ноя", 11), Map.entry("дек", 12));
 
     @Override
-    public LocalDateTime parse(String parse) throws Exception {
+    public LocalDateTime parse(String parse) {
+        LocalDateTime ldt;
         String[] date;
-        LocalDateTime ldt = null;
+        String[] time;
+        String[] date2 = parse.split(",");
+        String[] time2 = date2[1].split(":");
         Month getMonth = LocalDateTime.now().getMonth();
         int getYear = LocalDateTime.now().getYear();
-        String[] time;
+        int getDay = LocalDateTime.now().getDayOfMonth();
 
         if (parse.contains("вчера")) {
-            date = parse.split(",");
-            time = date[1].split(":");
-            int getPrevDay = LocalDateTime.now().getDayOfMonth() - 1;
-
             ldt = LocalDateTime.of(
-                    getYear, getMonth, getPrevDay, Integer.parseInt(time[0].trim()), Integer.parseInt(time[1].trim()));
+                    getYear, getMonth, getDay - 1, Integer.parseInt(time2[0].trim()),
+                    Integer.parseInt(time2[1].trim()));
 
         } else if (parse.contains("сегодня")) {
-            date = parse.split(",");
-            time = date[1].split(":");
-            int getDay = LocalDateTime.now().getDayOfMonth();
-
             ldt = LocalDateTime.of(
-                    getYear, getMonth, getDay, Integer.parseInt(time[0].trim()), Integer.parseInt(time[1].trim()));
+                    getYear, getMonth, getDay, Integer.parseInt(time2[0].trim()),
+                    Integer.parseInt(time2[1].trim()));
 
         } else {
             date = parse.split(" ");
