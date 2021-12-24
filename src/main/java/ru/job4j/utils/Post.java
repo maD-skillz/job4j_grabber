@@ -1,5 +1,10 @@
 package ru.job4j.utils;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -68,6 +73,24 @@ public class Post {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    String gtTitle(Post title) throws Exception {
+        setLink("https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t");
+        Document doc = Jsoup.connect(getLink()).get();
+        Elements row = doc.select(".tbody");
+        return null;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Document doc = Jsoup.connect(
+                "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t").get();
+        Elements row = doc.select("tr");
+        for (Element e : row) {
+            Element par = e.parent().child(0).child(0);
+            int childsize = e.parent().children().size();
+            System.out.println(par.text());
+        }
     }
 
     @Override
