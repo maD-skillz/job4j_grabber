@@ -1,7 +1,6 @@
 package ru.job4j.utils;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.*;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
@@ -13,24 +12,20 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
     @Override
     public LocalDateTime parse(String parse) {
-        LocalDateTime ldt;
         String[] date;
         String[] time;
         String[] date2 = parse.split(",");
         String[] time2 = date2[1].split(":");
-        Month getMonth = LocalDateTime.now().getMonth();
-        int getYear = LocalDateTime.now().getYear();
-        int getDay = LocalDateTime.now().getDayOfMonth();
+        LocalDateTime ldt = LocalDateTime.of(
+                LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), Integer.parseInt(time2[0].trim()),
+                Integer.parseInt(time2[1].trim()));
 
-        if (parse.contains("вчера")) {
-            ldt = LocalDateTime.of(
-                    getYear, getMonth, getDay - 1, Integer.parseInt(time2[0].trim()),
-                    Integer.parseInt(time2[1].trim()));
+        if (parse.contains("сегодня")) {
+           return ldt;
 
-        } else if (parse.contains("сегодня")) {
-            ldt = LocalDateTime.of(
-                    getYear, getMonth, getDay, Integer.parseInt(time2[0].trim()),
-                    Integer.parseInt(time2[1].trim()));
+        } else if (parse.contains("вчера")) {
+            return ldt.minusDays(1);
 
         } else {
             date = parse.split(" ");

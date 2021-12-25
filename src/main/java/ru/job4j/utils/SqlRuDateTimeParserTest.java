@@ -14,7 +14,8 @@ public class SqlRuDateTimeParserTest {
     public void whenToday() throws Exception {
         SqlRuDateTimeParser par = new SqlRuDateTimeParser();
         String pars = "сегодня, 11:37";
-        LocalDateTime time = LocalDateTime.of(2021, Month.DECEMBER, 24, 11, 37, 00);
+        LocalDateTime time = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 11, 37, 00);
         assertThat(par.parse(pars), is(time));
     }
 
@@ -22,7 +23,8 @@ public class SqlRuDateTimeParserTest {
     public void whenYesterday() throws Exception {
         SqlRuDateTimeParser par = new SqlRuDateTimeParser();
         String pars = "вчера, 13:37";
-        LocalDateTime time = LocalDateTime.of(2021, Month.DECEMBER, 23, 13, 37, 00);
+        LocalDateTime time = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth() - 1, 13, 37, 00);
         assertThat(par.parse(pars), is(time));
     }
 
