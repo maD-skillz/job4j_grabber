@@ -2,10 +2,10 @@ package ru.job4j.utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Objects;
 
 public class Post {
@@ -35,6 +35,11 @@ public class Post {
         this.created = created;
     }
 
+    private static final Map<String, Integer> MONTHS = Map.ofEntries(Map.entry("янв", 1), Map.entry("фев", 2),
+            Map.entry("мар", 3), Map.entry("апр", 4), Map.entry("май", 5), Map.entry("июн", 6),
+            Map.entry("июл", 7), Map.entry("авг", 8), Map.entry("сен", 9), Map.entry("окт", 10),
+            Map.entry("ноя", 11), Map.entry("дек", 12));
+
     public int getId() {
         return id;
     }
@@ -43,54 +48,57 @@ public class Post {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitle() throws IOException {
+        Document doc = Jsoup.connect(getLink()).get();
+        return doc.select("td[id=id22132447]").first().text();
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title) throws IOException {
         this.title = title;
     }
 
     public String getLink() {
-        return link;
+        return "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
     }
 
     public void setLink(String link) {
         this.link = link;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescription() throws IOException {
+        Document doc = Jsoup.connect(getLink()).get();
+        return doc.select("td[class=msgBody]").text();
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public LocalDateTime getCreated() throws IOException {
+        Document doc = Jsoup.connect(getLink()).get();
+        Elements row = doc.select("td[class=msgFooter]");
+        String[] date = row.text().split("\\[");
+        String[] ldtTime = date[0].split(",");
+        String[] hourMinute = ldtTime[1].split(":");
+        String[] dayMonthYear = ldtTime[0].split(" ");
+        return LocalDateTime.of(2000 + Integer.parseInt(dayMonthYear[2]), MONTHS.get(dayMonthYear[1]),
+                Integer.parseInt(dayMonthYear[0]), Integer.parseInt(hourMinute[0].trim()), Integer.parseInt(hourMinute[1].trim()));
     }
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    String gtTitle(Post title) throws Exception {
-        setLink("https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t");
-        Document doc = Jsoup.connect(getLink()).get();
-        Elements row = doc.select(".tbody");
-        return null;
-    }
-
     public static void main(String[] args) throws IOException {
         Document doc = Jsoup.connect(
                 "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t").get();
-        Elements row = doc.select("tr");
-        for (Element e : row) {
-            Element par = e.parent().child(0).child(0);
-            int childsize = e.parent().children().size();
-            System.out.println(par.text());
-        }
+        Elements row = doc.select("td[class=msgFooter]");
+        String[] date = row.text().split("\\[");
+        String[] ldtTime = date[0].split(",");
+        String[] hourMinute = ldtTime[1].split(":");
+        String[] dayMonthYear = ldtTime[0].split(" ");
+        System.out.println(LocalDateTime.of(2000 + Integer.parseInt(dayMonthYear[2]), MONTHS.get(dayMonthYear[1]),
+                Integer.parseInt(dayMonthYear[0]), Integer.parseInt(hourMinute[0].trim()), Integer.parseInt(hourMinute[1].trim())));
     }
 
     @Override
