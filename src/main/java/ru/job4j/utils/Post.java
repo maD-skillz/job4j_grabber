@@ -47,7 +47,7 @@ public class Post {
     }
 
     public String getLink() {
-        return link;
+        return "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
     }
 
     public void setLink(String link) {

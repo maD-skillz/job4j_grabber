@@ -9,12 +9,12 @@ public class ParseToPost {
 
     public Post parseToPost(String link) throws IOException {
         Document doc = Jsoup.connect(link).get();
-        Elements dateParse = doc.select("td[class=msgFooter]");
-        String[] date = dateParse.text().split("\\[");
+        String dateParse = doc.select(".msgFooter").get(0).text();
+        String[] date = dateParse.split("\\[");
         SqlRuDateTimeParser parser = new SqlRuDateTimeParser();
-        return new Post(1, doc.select("td[id=id22132447]").first().text(),
-                "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t",
-                doc.select("td[class=msgBody]").text(), parser.parse(date[0]));
+        return new Post(1, doc.select(".messageHeader]").get(0).ownText(),
+                link,
+                doc.select(".msgBody").get(1).text(), parser.parse(date[0].trim()));
     }
 }
 
