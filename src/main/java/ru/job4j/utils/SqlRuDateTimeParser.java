@@ -12,14 +12,13 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
     @Override
     public LocalDateTime parse(String parse) {
-        String[] date;
-        String[] time;
-        String[] date2 = parse.split(",");
-        String[] time2 = date2[1].split(":");
+        LocalDateTime ldtNow = LocalDateTime.now();
+        String[] date = parse.split(",");
+        String[] time = date[1].split(":");
         LocalDateTime ldt = LocalDateTime.of(
-                LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
-                LocalDateTime.now().getDayOfMonth(), Integer.parseInt(time2[0].trim()),
-                Integer.parseInt(time2[1].trim()));
+                ldtNow.getYear(), ldtNow.getMonth(),
+                ldtNow.getDayOfMonth(), Integer.parseInt(time[0].trim()),
+                Integer.parseInt(time[1].trim()));
 
         if (parse.contains("сегодня")) {
            return ldt;
@@ -29,8 +28,8 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
         } else {
             date = parse.split(" ");
-            String[] year = date[2].split(",");
             time = date[3].split(":");
+            String[] year = date[2].split(",");
 
             ldt = LocalDateTime.of(2000 + Integer.parseInt(year[0]), MONTHS.get(date[1]),
                         Integer.parseInt(date[0]), Integer.parseInt(time[0]), Integer.parseInt(time[1]));
