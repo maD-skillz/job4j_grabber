@@ -89,13 +89,6 @@ public class Post {
         this.created = created;
     }
 
-    String gtTitle(Post title) throws Exception {
-        setLink("https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t");
-        Document doc = Jsoup.connect(getLink()).get();
-        Elements row = doc.select(".tbody");
-        return null;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
