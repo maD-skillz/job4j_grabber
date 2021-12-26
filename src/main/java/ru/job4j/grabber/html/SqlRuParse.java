@@ -36,14 +36,17 @@ public class SqlRuParse implements Parse {
 
     @Override
     public List<Post> list(String link) throws Exception {
-        List<String> linkList = new ArrayList<>();
+        List<Elements> elemList = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
+        Post post;
         for (int i = 1; i <= 5; i++) {
-            String sheet = "https://www.sql.ru/forum/job-offers/" + i;
-            linkList.add(sheet);
+            Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + i).get();
+            Elements row = doc.select(".postslisttopic");
+            elemList.add(row);
         }
-        for (String e : linkList) {
-            postList.add(detail(e));
+        for (Elements e : elemList) {
+            post = detail(e.text());
+            postList.add(post);
         }
         return postList;
     }
