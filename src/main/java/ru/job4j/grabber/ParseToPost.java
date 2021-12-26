@@ -1,7 +1,9 @@
-package ru.job4j.utils;
+package ru.job4j.grabber;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import ru.job4j.grabber.utils.SqlRuDateTimeParser;
+
 import java.io.IOException;
 
 public class ParseToPost {

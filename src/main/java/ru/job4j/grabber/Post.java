@@ -1,4 +1,4 @@
-package ru.job4j.utils;
+package ru.job4j.grabber;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -15,6 +15,10 @@ public class Post {
 
     private LocalDateTime created;
 
+    public Post() {
+
+    }
+
     public Post(String title, String link, String description, LocalDateTime created) {
         this.title = title;
         this.link = link;
@@ -29,6 +33,7 @@ public class Post {
         this.description = description;
         this.created = created;
     }
+
 
     public int getId() {
         return id;
@@ -47,7 +52,7 @@ public class Post {
     }
 
     public String getLink() {
-        return "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
+        return link;
     }
 
     public void setLink(String link) {
