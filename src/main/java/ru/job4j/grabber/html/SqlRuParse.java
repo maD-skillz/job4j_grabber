@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.job4j.grabber.Parse;
-import ru.job4j.grabber.ParseToPost;
 import ru.job4j.grabber.Post;
 import ru.job4j.grabber.utils.DateTimeParser;
 
@@ -36,17 +35,21 @@ public class SqlRuParse implements Parse {
 
     @Override
     public List<Post> list(String link) throws Exception {
-        List<Elements> elemList = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
         Post post;
         for (int i = 1; i <= 5; i++) {
-            Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + i).get();
+            Document doc = Jsoup.connect(
+                    "https://www.sql.ru/forum/job-offers/" + i).get();
             Elements row = doc.select(".postslisttopic");
-            elemList.add(row);
-        }
-        for (Elements e : elemList) {
-            post = detail(e.text());
-            postList.add(post);
+            for (Element e : row) {
+                Element href = e.child(0);
+                if (!href.attr("href").contains("javascript")
+                        && href.attr("href").contains("java")) {
+                    post = detail(href.attr("href"));
+                    postList.add(post);
+                }
+            }
+
         }
         return postList;
     }
