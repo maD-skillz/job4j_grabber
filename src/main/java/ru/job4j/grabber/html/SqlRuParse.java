@@ -19,18 +19,8 @@ public class SqlRuParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
-    public static void main(String[] args) throws Exception {
-        for (int i = 1; i <= 5; i++) {
-            Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + i).get();
-            Elements row = doc.select(".postslisttopic");
-            for (Element td : row) {
-                Element href = td.child(0);
-                Element time = td.parent().child(5);
-                System.out.println(href.attr("href"));
-                System.out.println(href.text());
-                System.out.println(time.text());
-            }
-        }
+    public SqlRuParse() {
+        dateTimeParser = null;
     }
 
     @Override
