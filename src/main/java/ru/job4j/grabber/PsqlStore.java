@@ -57,7 +57,7 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public List<Post> getAll() {
         List<Post> postList = new ArrayList<>();
-        try (PreparedStatement ps = cnn.prepareStatement("select * from items")) {
+        try (PreparedStatement ps = cnn.prepareStatement("select * from post")) {
             try (ResultSet resultSet = ps.executeQuery()) {
                 while (resultSet.next()) {
                     postList.add(postResultSet(resultSet));
@@ -72,7 +72,7 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public Post findById(int id) {
         Post result = null;
-        try (PreparedStatement ps = cnn.prepareStatement("select * from items where id = ?")) {
+        try (PreparedStatement ps = cnn.prepareStatement("select * from post where id = ?")) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next()) {
