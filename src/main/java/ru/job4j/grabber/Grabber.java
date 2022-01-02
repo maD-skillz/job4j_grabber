@@ -6,6 +6,7 @@ import ru.job4j.grabber.html.SqlRuParse;
 
 import java.io.*;
 import java.sql.*;
+import java.util.List;
 import java.util.Properties;
 
 import static org.quartz.JobBuilder.newJob;
@@ -15,8 +16,8 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class Grabber implements Grab {
     private final Properties cfg = new Properties();
 
-    public Store store() {
-        return null;
+    public Store store() throws SQLException {
+        return new PsqlStore(cfg);
     }
 
     public Scheduler scheduler() throws SchedulerException {
@@ -26,17 +27,9 @@ public class Grabber implements Grab {
     }
 
     public void cfg() throws IOException {
-        try (InputStream in = new FileInputStream("grabber.properties")) {
+        try (InputStream in = new FileInputStream("src/main/resources/grabber.properties")) {
             cfg.load(in);
         }
-    }
-
-    public static Connection getCon(Properties properties) throws SQLException {
-        return DriverManager.getConnection(
-                properties.getProperty("url"),
-                properties.getProperty("username"),
-                properties.getProperty("password")
-        );
     }
 
     @Override
@@ -61,28 +54,23 @@ public class Grabber implements Grab {
 
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
+            Post post = new Post();
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("parse");
-            try (PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO post(title, link, description, created) VALUES(?, ?, ?, ?);",
-                    Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1, store.findById(Statement.RETURN_GENERATED_KEYS).getTitle());
-                ps.setString(2, store.findById(Statement.RETURN_GENERATED_KEYS).getLink());
-                ps.setString(3, store.findById(Statement.RETURN_GENERATED_KEYS).getDescription());
-                ps.setTimestamp(4, Timestamp.valueOf(store.findById(Statement.RETURN_GENERATED_KEYS).getCreated()));
-                ps.execute();
-            } catch (SQLException e) {
+            try {
+                List<Post> list = parse.list(post.getLink());
+                for (Post i : list) {
+                    store.save(i);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-
     public static void main(String[] args) throws Exception {
         Grabber grab = new Grabber();
-        PsqlStore psqlStore;
         grab.cfg();
         Scheduler scheduler = grab.scheduler();
         Store store = grab.store();
