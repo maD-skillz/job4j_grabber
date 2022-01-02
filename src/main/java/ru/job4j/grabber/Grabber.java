@@ -3,6 +3,7 @@ package ru.job4j.grabber;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import ru.job4j.grabber.html.SqlRuParse;
+import ru.job4j.grabber.utils.SqlRuDateTimeParser;
 
 import java.io.*;
 import java.sql.*;
@@ -59,7 +60,7 @@ public class Grabber implements Grab {
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
             try {
-                List<Post> list = parse.list(post.getLink());
+                List<Post> list = parse.list("https://www.sql.ru/forum/job-offers/");
                 for (Post i : list) {
                     store.save(i);
                 }
@@ -70,10 +71,11 @@ public class Grabber implements Grab {
     }
 
     public static void main(String[] args) throws Exception {
+        SqlRuDateTimeParser sqlRuDateTimeParser = new SqlRuDateTimeParser();
         Grabber grab = new Grabber();
         grab.cfg();
         Scheduler scheduler = grab.scheduler();
         Store store = grab.store();
-        grab.init(new SqlRuParse(), store, scheduler);
+        grab.init(new SqlRuParse(sqlRuDateTimeParser), store, scheduler);
     }
 }

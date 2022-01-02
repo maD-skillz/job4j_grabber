@@ -19,17 +19,13 @@ public class SqlRuParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
-    public SqlRuParse() {
-
-    }
-
     @Override
     public List<Post> list(String link) throws Exception {
         List<Post> postList = new ArrayList<>();
         Post post;
         for (int i = 1; i <= 5; i++) {
             Document doc = Jsoup.connect(
-                    "https://www.sql.ru/forum/job-offers/" + i).get();
+                    link + i).get();
             Elements row = doc.select(".postslisttopic");
             for (Element e : row) {
                 Element href = e.child(0);
