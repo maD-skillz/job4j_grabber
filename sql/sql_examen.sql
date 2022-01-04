@@ -29,16 +29,16 @@ insert into person(id, name, company_id) values('7', 'Rein', '2');
 insert into person(id, name, company_id) values('8', 'Lucio', '4');
 insert into person(id, name, company_id) values('9', 'Zen', '4');
 insert into person(id, name, company_id) values('10', 'Hammond', '4');
+insert into person(id, name, company_id) values('11', 'Vic', '5');
 
 select
-c.name as company,
 p.name as person,
-p.id = 5 and p.company_id is null
+c.name as company
 from company c
-right join person as p
-on (c.id = p.company_id);
+join person as p
+on (c.id = p.company_id)
+where c.id != 5;
 
-with takeMax as (
 select
 com.name,
 count(per) as c
@@ -46,7 +46,5 @@ from company as com
 join person as per
 on (com.id = per.company_id)
 group by com.name
-)
-select * from takeMax where takeMax.c = (select max(takeMax.c) from takeMax)
-
-	
+order by 
+count(per) desc limit 1;
