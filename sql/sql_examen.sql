@@ -40,11 +40,18 @@ on (c.id = p.company_id)
 where c.id != 5;
 
 select
-com.name,
-count(per) as c
+com.name as compname,
+count(per) as perscount
 from company as com
 join person as per
 on (com.id = per.company_id)
 group by com.name
-order by 
-count(per) desc limit 1;
+having count(per.name) = 
+(select count(company_id)
+from person
+group by company_id
+order by
+count(company_id)
+desc limit 1);
+
+
