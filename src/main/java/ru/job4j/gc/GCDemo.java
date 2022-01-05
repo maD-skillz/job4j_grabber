@@ -18,33 +18,10 @@ public class GCDemo {
 
     public static void main(String[] args) {
         info();
-        UserGC[] data = new UserGC[100000000];
+        UserGC userGC = new UserGC(1, "User");
+        UserGC[] data = new UserGC[100000];
         for (int i = 1; i <= data.length; i++) {
-           data[i] = new UserGC(i, "User#" + i);
-        }
-        for (int i = data.length - 1; i > 4000000; i--) {
-            data[i] = null;
-        }
-        for (int i = 1; i < 10000000; i++) {
-            data[1000000 + i] = new UserGC(i, "User#" + i);
-        }
-        for (int i = data.length - 1; i > 400000; i--) {
-            data[i] = null;
-        }
-        for (int i = 1; i < 100000; i++) {
-            data[1000000 + i] = new UserGC(i, "User#" + i);
-        }
-        for (int i = data.length - 1; i > 400000; i--) {
-            data[i] = null;
-        }
-        for (int i = 1; i < 100000; i++) {
-            data[1000000 + i] = new UserGC(i, "User#" + i);
-        }
-        for (int i = data.length - 1; i > 400000; i--) {
-            data[i] = null;
-        }
-        for (int i = 1; i < 10000000; i++) {
-            data[1000000 + i] = new UserGC(i, "User#" + i);
+            data[i] = new UserGC(i, "User#" + i);
         }
         info();
     }
