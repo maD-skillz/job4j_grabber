@@ -1,7 +1,6 @@
 package ru.job4j.gc;
 
 public class GCDemo {
-
     private static final long KB = 1000;
     private static final long MB = KB * KB;
     private static final Runtime ENVIRONMENT = Runtime.getRuntime();
@@ -18,11 +17,10 @@ public class GCDemo {
 
     public static void main(String[] args) {
         info();
-        UserGC userGC = new UserGC(1, "User");
-        UserGC[] data = new UserGC[100000];
-        for (int i = 1; i <= data.length; i++) {
-            data[i] = new UserGC(i, "User#" + i);
+        for (int i = 0; i < 100000; i++) {
+           new UserGC(i, "User#" + i);
         }
         info();
     }
 }
+
