@@ -7,8 +7,9 @@ import java.util.List;
 public class SoftDemo {
 
     public static void main(String[] args) {
-      //  example1();
+        example1();
         example2();
+        example3();
     }
 
     private static void example1() {
@@ -39,6 +40,13 @@ public class SoftDemo {
             }
         }
         System.out.println(liveObject);
+    }
+
+    private static void example3() {
+        SoftReference<String> soft = new SoftReference<>("text");
+        String strong = String.valueOf(soft);
+        System.gc();
+        System.out.println(strong);
     }
 
 }
