@@ -11,12 +11,11 @@ public abstract class AbstractCache<K, V> {
     protected final Map<K, SoftReference<V>> cache = new HashMap<>();
 
     public void put(K key, V value) {
-        cache.put(key, new SoftReference<>(value));
+
     }
 
     public V get(K key) {
-        SoftReference<V> getKey = cache.get(key);
-        return getKey != null ? getKey.get() : null;
+        return null;
     }
 
     protected abstract V load(K key) throws IOException;
