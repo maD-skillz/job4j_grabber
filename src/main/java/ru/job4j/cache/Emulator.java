@@ -5,7 +5,12 @@ import java.util.Scanner;
 
 public class Emulator {
 
-    private Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
+
+    private static final int LOAD_ACTION = 1;
+    private static final int PUT_ACTION = 2;
+    private static final int GET_ACTION = 3;
+    private static final int EXIT_ACTION = 4;
 
     public void display() throws IOException {
         System.out.println("-- Actions --");
@@ -14,23 +19,24 @@ public class Emulator {
                         + "  1) Для выбора пути нажмите 1.\n"
                         + "  2) Чтобы загурзить содержимое файла в кэш нажмите 2.\n"
                         + "  3) Чтобы получить содержимое файла из кэша нажмите 3.\n"
-                        + "  4)Для выхода нажмите 4.\n "
+                        + "  4) Для выхода нажмите 4.\n "
         );
 
         int selection = input.nextInt();
         input.nextLine();
+        DirFileCache dirFileCache = new DirFileCache(input.next());
 
         switch (selection) {
-            case 1:
-                new DirFileCache("C:\\Test").load(input.next());
+            case LOAD_ACTION:
+                dirFileCache.load(input.next());
                 break;
-            case 2:
-                new DirFileCache("C:\\Test").put(input.next(), input.next());
+            case PUT_ACTION:
+                dirFileCache.put(input.next(), input.next());
                 break;
-            case 3:
-                new DirFileCache("C:\\Test").get(input.next());
+            case GET_ACTION:
+                dirFileCache.get(input.next());
                 break;
-            case 4:
+            case EXIT_ACTION:
                 System.out.println("Выход.");
                 break;
             default:

@@ -18,13 +18,12 @@ public abstract class AbstractCache<K, V> {
         SoftReference<V> softNull = null;
         SoftReference<V> softCache = cache.getOrDefault(key, softNull);
         V getRef = softCache.get();
-        if (getRef == null) {
-          V loadV = load(key);
-            cache.put(key, softCache);
-        } else {
+        if (getRef != null) {
             return getRef;
+        } else {
+            cache.put(key, softCache);
+            return load(key);
         }
-        return getRef;
     }
 
     protected abstract V load(K key) throws IOException;
