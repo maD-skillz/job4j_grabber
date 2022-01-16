@@ -1,6 +1,5 @@
 package ru.job4j.cache;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Emulator {
@@ -12,7 +11,7 @@ public class Emulator {
     private static final int GET_ACTION = 3;
     private static final int EXIT_ACTION = 4;
 
-    public void display() throws IOException {
+    public void display() throws Exception {
         System.out.println("-- Actions --");
         System.out.println(
                 "Select an option: \n"
@@ -44,7 +43,7 @@ public class Emulator {
                 break;
         }
     }
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         Emulator emulator = new Emulator();
         emulator.display();
     }
