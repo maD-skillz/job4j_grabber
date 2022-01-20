@@ -5,25 +5,27 @@ import java.util.List;
 
 public class MaxMin {
 
-        public <T> T max(List<T> value, Comparator<T> comparator) {
-            T max = value.get(0);
-            for (T val : value) {
-                if (comparator.compare(val, max) > 0) {
-                    max = val;
+    public <T> T kiss(List<T> value, Comparator<T> comparator, int costyl) {
+        T val = value.get(0);
+        for (T index : value) {
+            if (costyl == 1) {
+                if (comparator.compare(val, index) < 0) {
+                    val = index;
+                }
+            } else if (costyl == -1) {
+                if (comparator.compare(val, index) > 0) {
+                    val = index;
                 }
             }
-            return max;
         }
+        return val;
+    }
 
+    public <T> T max(List<T> value, Comparator<T> comparator) {
+        return kiss(value, comparator, 1);
+    }
 
-        public <T> T min(List<T> value, Comparator<T> comparator) {
-            T min = value.get(0);
-            for (T val : value) {
-                if (comparator.compare(val, min) < 0) {
-                    min = val;
-                }
-            }
-            return min;
-        }
-
+    public <T> T min(List<T> value, Comparator<T> comparator) {
+        return kiss(value, comparator, -1);
+    }
 }
