@@ -2,7 +2,6 @@ package ru.job4j.kiss;
 
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -21,7 +20,6 @@ public class MaxMinTest {
 
     @Test
     public void minTest() {
-        Comparator<Integer> comparator = null;
         MaxMin maxMin = new MaxMin();
         List<Integer> list = List.of(5, 3, 1, 4, 2);
         assertThat(maxMin.min(list, Comparator.naturalOrder()), is(1));
