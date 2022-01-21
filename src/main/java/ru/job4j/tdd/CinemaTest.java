@@ -12,7 +12,7 @@ import java.util.List;
 public class CinemaTest {
     @Ignore
     @Test
-    public void whenBuy() throws IllegalArgumentException {
+    public void whenBuy() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
@@ -23,7 +23,7 @@ public class CinemaTest {
 
     @Ignore
     @Test
-    public void whenFind() throws IllegalArgumentException {
+    public void whenFind() {
         Cinema cinema = new Cinema3D();
         cinema.add(new Session3D());
         List<Session> sessions = cinema.find(session -> true);
@@ -31,7 +31,7 @@ public class CinemaTest {
     }
     @Ignore
     @Test
-    public void whenGetAccount() throws IllegalArgumentException {
+    public void whenGetAccount() {
         Account account = new AccountCinema("Mike", "mike98@mail.ru");
         Cinema cinema = new Cinema3D();
         cinema.add(new Session3D());
@@ -42,35 +42,31 @@ public class CinemaTest {
         }
 
     @Ignore
-    @Test
-    public void whenInvalidDate() throws IllegalArgumentException {
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidDate()  {
         Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
         Calendar expectedDate = Calendar.getInstance();
-        expectedDate.set(2022, 01, 21, 14, 00);
-        assertNotEquals(date, expectedDate);
+        expectedDate.set(2022, 13, 21, 14, 00);
         }
 
     @Ignore
-    @Test
-    public void whenInvalidTicketAndSamePlace() throws IllegalArgumentException {
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidTicketAndSamePlace() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
         Ticket ticket = cinema.buy(account, 1, 1, date);
         Ticket wrongTicket = cinema.buy(account, 1, 1, date);
-        assertFalse(ticket.getRow() == wrongTicket.getRow() && ticket.getColumn() == wrongTicket.getColumn());
     }
     @Ignore
-    @Test
-    public void whenInvalidPlace() throws IllegalArgumentException {
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidPlace() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
-        Ticket ticket = cinema.buy(account, 1, 1, date);
-        assertFalse(ticket.getRow() > 12);
-        assertFalse(ticket.getColumn() > 8);
+        Ticket ticket = cinema.buy(account, -1, 99999999, date);
     }
 }
