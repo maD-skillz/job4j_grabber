@@ -11,8 +11,8 @@ public class WeakDemo {
 
     public static void main(String[] args) throws InterruptedException {
         example1();
-        example2();
-        example3();
+      //  example2();
+     //   example3();
     }
 
     private static void example1() throws InterruptedException {
@@ -23,10 +23,11 @@ public class WeakDemo {
             }
         };
         WeakReference<Object> weak = new WeakReference<>(object);
+        Object getWeak = weak.get();
         object = null;
         System.gc();
         TimeUnit.SECONDS.sleep(3);
-        System.out.println(weak.get());
+        System.out.println(getWeak);
     }
 
     private static void example2() throws InterruptedException {
