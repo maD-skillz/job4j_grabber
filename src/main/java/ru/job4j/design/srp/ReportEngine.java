@@ -13,14 +13,17 @@ public class ReportEngine implements Report {
     @Override
     public String generate(Predicate<Employee> filter) {
         StringBuilder text = new StringBuilder();
-        text.append("Name; Hired; Fired; Salary;");
+        text.append("<h1>Name; Hired; Fired; Salary;</h1>");
 
         for (Employee employee : store.findBy(filter)) {
-            text.append("<html>")
-                    .append(employee.getName()).append(";")
-                    .append(employee.getHired()).append(";")
-                    .append(employee.getFired()).append(";")
-                    .append(employee.getSalary()).append(";")
+            text.append("<html>").append("<p>")
+                    .append(employee.getName()).append("</p>")
+                    .append("<p>")
+                    .append(employee.getHired()).append("</p>")
+                    .append("<p>")
+                    .append(employee.getFired()).append("</p>")
+                    .append("<p>")
+                    .append(employee.getSalary()).append("</p>")
                     .append("</html>")
                     .append(System.lineSeparator());
         }

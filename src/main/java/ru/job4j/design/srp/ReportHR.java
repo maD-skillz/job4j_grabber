@@ -1,7 +1,6 @@
 package ru.job4j.design.srp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -14,8 +13,6 @@ public class ReportHR implements Report {
     public ReportHR(Store store) {
         this.store = store;
     }
-
-
 
     @Override
     public String generate(Predicate<Employee> filter) {

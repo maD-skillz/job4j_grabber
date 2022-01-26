@@ -15,12 +15,15 @@ public class ReportEngineTest {
         store.add(worker);
         Report engine = new ReportEngine(store);
         StringBuilder expect = new StringBuilder()
-                .append("Name; Hired; Fired; Salary;")
-                .append("<html>")
-                .append(worker.getName()).append(";")
-                .append(worker.getHired()).append(";")
-                .append(worker.getFired()).append(";")
-                .append(worker.getSalary()).append(";")
+                .append("<h1>Name; Hired; Fired; Salary;</h1>")
+                .append("<html>").append("<p>")
+                .append(worker.getName()).append("</p>")
+                .append("<p>")
+                .append(worker.getHired()).append("</p>")
+                .append("<p>")
+                .append(worker.getFired()).append("</p>")
+                .append("<p>")
+                .append(worker.getSalary()).append("</p>")
                 .append("</html>")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
