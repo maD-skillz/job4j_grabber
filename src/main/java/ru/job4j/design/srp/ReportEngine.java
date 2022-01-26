@@ -16,7 +16,8 @@ public class ReportEngine implements Report {
         text.append("<h1>Name; Hired; Fired; Salary;</h1>");
 
         for (Employee employee : store.findBy(filter)) {
-            text.append("<html>").append("<p>")
+            text.append("<html>").append("<body>")
+                    .append("<p>")
                     .append(employee.getName()).append("</p>")
                     .append("<p>")
                     .append(employee.getHired()).append("</p>")
@@ -24,6 +25,7 @@ public class ReportEngine implements Report {
                     .append(employee.getFired()).append("</p>")
                     .append("<p>")
                     .append(employee.getSalary()).append("</p>")
+                    .append("</body>")
                     .append("</html>")
                     .append(System.lineSeparator());
         }
