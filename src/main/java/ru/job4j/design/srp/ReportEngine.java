@@ -13,11 +13,9 @@ public class ReportEngine implements Report {
     @Override
     public String generate(Predicate<Employee> filter) {
         StringBuilder text = new StringBuilder();
-        text.append("<h1>Name; Hired; Fired; Salary;</h1>");
-
+        text.append("<html><body><h1>Name; Hired; Fired; Salary;</h1>");
         for (Employee employee : store.findBy(filter)) {
-            text.append("<html>").append("<body>")
-                    .append("<p>")
+            text.append("<p>")
                     .append(employee.getName()).append("</p>")
                     .append("<p>")
                     .append(employee.getHired()).append("</p>")
