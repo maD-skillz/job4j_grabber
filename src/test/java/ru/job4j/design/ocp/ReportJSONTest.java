@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class ReportJSONTest {
 
     @Test
-    public void JSONtest() {
+    public void testJSON() {
         User user = new User("Иван", "Пятаков");
         MemStore memStore = new MemStore();
         memStore.add(user);

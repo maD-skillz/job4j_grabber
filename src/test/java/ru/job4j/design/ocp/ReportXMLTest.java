@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class ReportXMLTest {
 
     @Test
-    public void XMLtest() {
+    public void testXML() {
         User user = new User("Иван", "Пятаков");
         MemStore memStore = new MemStore();
         memStore.add(user);
