@@ -1,6 +1,5 @@
 package ru.job4j.design.ocp;
 
-import ru.job4j.design.srp.Employee;
 
 import java.util.function.Predicate;
 
