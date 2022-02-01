@@ -1,7 +1,11 @@
 package ru.job4j.design.ocp;
 
 import com.google.gson.GsonBuilder;
+import ru.job4j.design.srp.Employee;
+import ru.job4j.design.srp.Report;
+import ru.job4j.design.srp.Store;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 
@@ -14,11 +18,10 @@ public class JsonBuilder implements Report {
     }
 
     @Override
-    public String generate(Predicate<User> filter) {
+    public String generate(Predicate<Employee> filter) {
          var lib = new GsonBuilder().create();
-         for (User u : store.findBy(filter)) {
-             return lib.toJson(u);
-             }
-         return "";
+                List<Employee> employeeList = store.findBy(filter);
+             return lib.toJson(employeeList);
+
     }
 }

@@ -21,6 +21,10 @@ public class Employee {
         this.salary = salary;
     }
 
+    public Employee() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -58,15 +62,16 @@ public class Employee {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Employee)) {
             return false;
         }
         Employee employee = (Employee) o;
-        return Objects.equals(name, employee.name);
+        return Double.compare(employee.salary, salary) == 0 && name.equals(employee.name)
+                && hired.equals(employee.hired) && fired.equals(employee.fired);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name, hired, fired, salary);
     }
 }
