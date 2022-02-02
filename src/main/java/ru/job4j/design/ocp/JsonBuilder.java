@@ -5,7 +5,6 @@ import ru.job4j.design.srp.Employee;
 import ru.job4j.design.srp.Report;
 import ru.job4j.design.srp.Store;
 
-import java.util.List;
 import java.util.function.Predicate;
 
 
@@ -20,8 +19,7 @@ public class JsonBuilder implements Report {
     @Override
     public String generate(Predicate<Employee> filter) {
          var lib = new GsonBuilder().create();
-                List<Employee> employeeList = store.findBy(filter);
-             return lib.toJson(employeeList);
+             return lib.toJson(store.findBy(filter));
 
     }
 }
