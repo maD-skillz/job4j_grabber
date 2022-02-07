@@ -18,7 +18,7 @@ public class GCDemo {
     public static void main(String[] args) {
         info();
         for (int i = 0; i < 100000; i++) {
-           new UserGC(i, "User#" + i);
+           new UserGC(i, "Employee#" + i);
         }
         info();
     }

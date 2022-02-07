@@ -1,16 +1,21 @@
 package ru.job4j.design.lsp;
 
 
+import java.time.Duration;
 
-public abstract class Distributor {
+public interface Distributor {
 
-
-    public void addFood(Food food) {
-
+    default double discount(Food food) {
+        long expirationDate = Duration.between(food.getCreateDate(), food.getExpiryDate()).toDays();
+        if (food.getDiscount() != 0 && expirationDate != 0 && expirationDate > expirationDate * 100 / 75) {
+            return food.getPrice() - food.getDiscount();
+        }
+        return 0;
     }
 
-    public Food getFood(Food food) {
-        return new Food();
-    }
+    boolean accept(Food food);
 
+    boolean addFood(Food food);
 }
+
+
