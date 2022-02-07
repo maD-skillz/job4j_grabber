@@ -13,15 +13,13 @@ public class ControlQuality {
     public ControlQuality() {
 
     }
-    public List<Distributor> getDistributorList() {
-        return distributorList;
-    }
 
     public void distribution(Food food) {
         for (Distributor index : distributorList) {
-            index.discount(food);
-            index.accept(food);
-            index.addFood(food);
+            if (index.accept(food)) {
+                index.addFood(food);
+                break;
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 package ru.job4j.design.lsp;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +15,7 @@ public class Shop implements Distributor {
     @Override
     public boolean accept(Food food) {
         boolean result = false;
-        Duration expirationDateDur = Duration.between(food.getExpiryDate(), food.getCreateDate());
-        Duration residualExpTimeDur = Duration.between(LocalDateTime.now(), food.getCreateDate());
-        long expirationDate = Math.abs(expirationDateDur.toDays());
-        long residualExpTime = Math.abs(residualExpTimeDur.toDays());
-        long percent = (residualExpTime / expirationDate) * 100;
-        if (percent >= 25 && percent <= 75) {
+        if (percent(food) >= 25 && percent(food) <= 75) {
             result = true;
         }
         return result;
@@ -31,6 +25,9 @@ public class Shop implements Distributor {
     public boolean addFood(Food food) {
         boolean result = false;
         if (accept(food)) {
+            if (percent(food) > 75) {
+                food.setPrice(food.getPrice() - food.getDiscount());
+            }
             result = shopStore.add(food);
         }
         return result;

@@ -2,15 +2,16 @@ package ru.job4j.design.lsp;
 
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 public interface Distributor {
 
-    default double discount(Food food) {
-        long expirationDate = Duration.between(food.getCreateDate(), food.getExpiryDate()).toDays();
-        if (food.getDiscount() != 0 && expirationDate != 0 && expirationDate > expirationDate * 100 / 75) {
-            return food.getPrice() - food.getDiscount();
-        }
-        return 0;
+    default double percent(Food food) {
+        Duration expirationDateDur = Duration.between(food.getExpiryDate(), food.getCreateDate());
+        Duration residualExpTimeDur = Duration.between(LocalDateTime.now(), food.getCreateDate());
+        long expirationDate = Math.abs(expirationDateDur.toDays());
+        long residualExpTime = Math.abs(residualExpTimeDur.toDays());
+        return (residualExpTime / expirationDate) * 100;
     }
 
     boolean accept(Food food);
