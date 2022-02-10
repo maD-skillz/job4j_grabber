@@ -9,7 +9,7 @@ public class Shop implements Distributor {
     private final List<Food> shopStore = new ArrayList<>();
 
     public List<Food> getShopStore() {
-        return shopStore;
+        return new ArrayList<>(shopStore);
     }
 
     @Override

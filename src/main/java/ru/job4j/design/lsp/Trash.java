@@ -9,7 +9,7 @@ public class Trash implements Distributor {
     private final List<Food> trashStore = new ArrayList<>();
 
     public List<Food> getTrashStore() {
-        return trashStore;
+        return new ArrayList<>(trashStore);
     }
 
     @Override
