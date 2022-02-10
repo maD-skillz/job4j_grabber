@@ -1,8 +1,6 @@
 package ru.job4j.design.lsp;
 
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +15,7 @@ public class Trash implements Distributor {
     @Override
     public boolean accept(Food food) {
         boolean result = false;
-        Duration expirationDateDur = Duration.between(food.getExpiryDate(), food.getCreateDate());
-        Duration residualExpTimeDur = Duration.between(LocalDateTime.now(), food.getCreateDate());
-        long expirationDate = Math.abs(expirationDateDur.toDays());
-        long residualExpTime = Math.abs(residualExpTimeDur.toDays());
-        if ((expirationDate - residualExpTime) <= 0) {
+        if (percentGet(food) >= 100) {
             result = true;
         }
         return result;

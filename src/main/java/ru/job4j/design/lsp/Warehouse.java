@@ -15,7 +15,7 @@ public class Warehouse implements Distributor {
     @Override
     public boolean accept(Food food) {
         boolean result = false;
-        if (percent(food) < 25) {
+        if (percentGet(food) < 25) {
             result = true;
         }
         return result;

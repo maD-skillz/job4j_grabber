@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 
 public interface Distributor {
 
-    default double percent(Food food) {
+    default double percentGet(Food food) {
         Duration expirationDateDur = Duration.between(food.getExpiryDate(), food.getCreateDate());
         Duration residualExpTimeDur = Duration.between(LocalDateTime.now(), food.getCreateDate());
         long expirationDate = Math.abs(expirationDateDur.toDays());
         long residualExpTime = Math.abs(residualExpTimeDur.toDays());
-        return (residualExpTime / expirationDate) * 100;
+        return (double) (residualExpTime / expirationDate) * 100;
     }
 
     boolean accept(Food food);

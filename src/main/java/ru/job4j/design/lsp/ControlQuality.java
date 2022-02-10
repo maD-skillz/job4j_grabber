@@ -14,6 +14,8 @@ public class ControlQuality {
 
     }
 
+
+
     public void distribution(Food food) {
         for (Distributor index : distributorList) {
             if (index.accept(food)) {

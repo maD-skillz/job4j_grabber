@@ -15,19 +15,20 @@ public class Shop implements Distributor {
     @Override
     public boolean accept(Food food) {
         boolean result = false;
-        if (percent(food) >= 25 && percent(food) <= 75) {
+        if (percentGet(food) >= 25 && percentGet(food) <= 75) {
             result = true;
-        }
+        } else if (percentGet(food) > 75) {
+            food.setPrice(food.getPrice() - food.getDiscount());
+            result = true;
+    }
         return result;
     }
+
 
     @Override
     public boolean addFood(Food food) {
         boolean result = false;
         if (accept(food)) {
-            if (percent(food) > 75) {
-                food.setPrice(food.getPrice() - food.getDiscount());
-            }
             result = shopStore.add(food);
         }
         return result;
