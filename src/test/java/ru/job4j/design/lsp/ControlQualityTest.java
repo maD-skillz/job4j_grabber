@@ -48,7 +48,7 @@ public class ControlQualityTest {
         assertThat(result, is(chicken));
     }
 
-    @Ignore
+
     @Test
     public void whenApplyDiscount() {
         Shop shop = new Shop();
