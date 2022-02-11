@@ -8,7 +8,8 @@ public class Trash implements Distributor {
 
     private final List<Food> trashStore = new ArrayList<>();
 
-    public List<Food> getTrashStore() {
+    @Override
+    public List<Food> getCopyOfStore() {
         return new ArrayList<>(trashStore);
     }
 

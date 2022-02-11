@@ -1,7 +1,6 @@
 package ru.job4j.design.lsp;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 public class Food {
 
@@ -14,9 +13,6 @@ public class Food {
     private double price;
 
     private double discount;
-
-    public Food() {
-    }
 
     public Food(String name, LocalDateTime expiryDate, LocalDateTime createDate, double price, double discount) {
         this.name = name;

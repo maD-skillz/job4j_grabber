@@ -8,14 +8,15 @@ public class Warehouse implements Distributor {
 
     private final List<Food> warehouseStore = new ArrayList<>();
 
-    public List<Food> getWarehouseStore() {
+    @Override
+    public List<Food> getCopyOfStore() {
         return new ArrayList<>(warehouseStore);
     }
 
     @Override
     public boolean accept(Food food) {
         boolean result = false;
-        if (percentGet(food) < 25) {
+        if (percentGet(food) >= 0 && percentGet(food) < 25) {
             result = true;
         }
         return result;

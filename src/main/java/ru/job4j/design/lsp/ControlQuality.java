@@ -10,12 +10,6 @@ public class ControlQuality {
         this.distributorList = distributorList;
     }
 
-    public ControlQuality() {
-
-    }
-
-
-
     public void distribution(Food food) {
         for (Distributor index : distributorList) {
             if (index.accept(food)) {
