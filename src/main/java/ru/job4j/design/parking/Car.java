@@ -1,12 +1,13 @@
 package ru.job4j.design.parking;
 
+
 import java.util.Objects;
 
 public class Car implements Vehicle {
 
     private String model;
 
-    private final int size = 1;
+    public static final int SIZE = 1;
 
     public Car(String model) {
         this.model = model;
@@ -20,8 +21,9 @@ public class Car implements Vehicle {
         this.model = model;
     }
 
+    @Override
     public int getSize() {
-        return size;
+        return SIZE;
     }
 
     @Override
@@ -33,11 +35,11 @@ public class Car implements Vehicle {
             return false;
         }
         Car car = (Car) o;
-        return size == car.size && Objects.equals(model, car.model);
+        return Objects.equals(model, car.model);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(model, size);
+        return Objects.hash(model);
     }
 }

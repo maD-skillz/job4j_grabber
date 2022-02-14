@@ -21,6 +21,7 @@ public class Truck implements Vehicle {
         this.model = model;
     }
 
+    @Override
     public int getSize() {
         return size;
     }
