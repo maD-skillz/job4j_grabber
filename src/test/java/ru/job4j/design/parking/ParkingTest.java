@@ -45,4 +45,22 @@ public class ParkingTest {
         assertFalse(parking.addVehicle(truck2));
     }
 
+    @Ignore
+    @Test (expected = IllegalArgumentException.class)
+    public void whenCarOnTruckPlace()  {
+        Parking parking = new Parking(0, 1);
+        Car car = new Car("Tesla");
+        parking.isCarOrTruck(car);
+        parking.addVehicle(car);
+    }
+
+    @Ignore
+    @Test (expected = IllegalArgumentException.class)
+    public void whenTruckOnCarPlace() {
+        Parking parking = new Parking(1, 0);
+        Truck truck = new Truck("Volvo", 3);
+        parking.isCarOrTruck(truck);
+        parking.addVehicle(truck);
+    }
+
 }

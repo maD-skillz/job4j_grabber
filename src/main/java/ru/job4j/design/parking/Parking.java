@@ -22,6 +22,11 @@ public class Parking implements ParkService {
     }
 
     @Override
+    public boolean isCarOrTruck(Vehicle vehicle) {
+        return false;
+    }
+
+    @Override
     public boolean addVehicle(Vehicle vehicle) {
         return false;
     }
