@@ -1,12 +1,12 @@
 package ru.job4j.design.parking;
 
-import org.junit.Ignore;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class ParkingTest {
-    @Ignore
+
     @Test
     public void whenAddOneCarAndTruck() {
         Parking parking = new Parking(1, 1);
@@ -15,7 +15,7 @@ public class ParkingTest {
         assertTrue(parking.addVehicle(car));
         assertTrue(parking.addVehicle(truck));
     }
-    @Ignore
+
     @Test
     public void whenAddTwoCarsAndTruck() {
         Parking parking = new Parking(2, 1);
@@ -26,7 +26,7 @@ public class ParkingTest {
         assertTrue(parking.addVehicle(car2));
         assertTrue(parking.addVehicle(truck));
     }
-    @Ignore
+
     @Test
     public void whenAddTwoTrucks() {
         Parking parking = new Parking(0, 2);
@@ -35,7 +35,7 @@ public class ParkingTest {
         assertTrue(parking.addVehicle(truck1));
         assertTrue(parking.addVehicle(truck2));
     }
-    @Ignore
+
     @Test
     public void whenNoEmptyPlaces() {
         Parking parking = new Parking(0, 0);
@@ -45,22 +45,48 @@ public class ParkingTest {
         assertFalse(parking.addVehicle(truck2));
     }
 
-    @Ignore
-    @Test (expected = IllegalArgumentException.class)
-    public void whenCarOnTruckPlace()  {
+
+    @Test
+    public void whenCarOnTruckPlace() {
         Parking parking = new Parking(0, 1);
         Car car = new Car("Tesla");
-        parking.isCarOrTruck(car);
         parking.addVehicle(car);
+        assertFalse(parking.addVehicle(car));
     }
 
-    @Ignore
-    @Test (expected = IllegalArgumentException.class)
+
+    @Test
     public void whenTruckOnCarPlace() {
         Parking parking = new Parking(1, 0);
         Truck truck = new Truck("Volvo", 3);
-        parking.isCarOrTruck(truck);
         parking.addVehicle(truck);
+        assertFalse(parking.addVehicle(truck));
+    }
+
+    @Test
+    public void whenThreeTrucksOnCarPlaceAndNotEnoughSize() {
+        Parking parking = new Parking(6, 0);
+        Truck truck1 = new Truck("Kamaz", 2);
+        Truck truck2 = new Truck("Maz", 3);
+        Truck truck3 = new Truck("Belaz", 5);
+        assertTrue(parking.addVehicle(truck1));
+        assertTrue(parking.addVehicle(truck2));
+        assertFalse(parking.addVehicle(truck3));
+    }
+
+    @Test
+    public void whenNotEnoughPlaceForThreeCarsAndTwoTrucks() {
+        Parking parking = new Parking(2, 1);
+        Car car1 = new Car("Tesla");
+        Car car2 = new Car("Camry");
+        Car car3 = new Car("Vesta");
+        Truck truck1 = new Truck("Volvo", 2);
+        Truck truck2 = new Truck("Maz", 3);
+        assertTrue(parking.addVehicle(car1));
+        assertTrue(parking.addVehicle(car2));
+        assertTrue(parking.addVehicle(truck1));
+        assertFalse(parking.addVehicle(car3));
+        assertFalse(parking.addVehicle(truck2));
     }
 
 }
