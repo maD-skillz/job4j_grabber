@@ -20,31 +20,25 @@ public class Parking implements ParkService {
         this.truckPlace = truckPlace;
     }
 
-    @Override
-    public boolean isValidPlace() {
-        return carPlace != 0 | truckPlace != 0;
-    }
 
 
     @Override
     public boolean addVehicle(Vehicle vehicle) {
         boolean result = false;
-        if (isValidPlace()) {
+        if (carPlace != 0 | truckPlace != 0) {
             if (vehicle.getSize() > Car.SIZE && vehicle.getSize() <= carPlace) {
-            currentTruckSize += vehicle.getSize();
-            if (currentTruckSize <= carPlace) {
-                result = parkingSize.add(vehicle);
-            }
-        } else if (vehicle.getSize() > Car.SIZE) {
-            currentTruckSize++;
+                currentTruckSize += vehicle.getSize();
+                if (currentTruckSize <= carPlace) {
+                    result = parkingSize.add(vehicle);
+                }
+
+            } else if (vehicle.getSize() > Car.SIZE) {
+                currentTruckSize++;
                 if (currentTruckSize <= truckPlace) {
                     result = parkingSize.add(vehicle);
                 }
-            }
 
-        }
-        if (isValidPlace()) {
-            if (vehicle.getSize() == Car.SIZE) {
+            } else if (vehicle.getSize() == Car.SIZE) {
                 currentCarSize++;
                 if (currentCarSize <= carPlace) {
                     result = parkingSize.add(vehicle);
