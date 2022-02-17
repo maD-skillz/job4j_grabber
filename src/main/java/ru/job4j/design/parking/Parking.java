@@ -21,31 +21,22 @@ public class Parking implements ParkService {
     }
 
 
-
     @Override
     public boolean addVehicle(Vehicle vehicle) {
         boolean result = false;
         if (carPlace != 0 | truckPlace != 0) {
-            if (vehicle.getSize() > Car.SIZE) {
-                if (currentTruckSize + 1 <= truckPlace) {
-                    result = parkingSize.add(vehicle);
-                    currentTruckSize++;
-                } else if (vehicle.getSize() > Car.SIZE && vehicle.getSize() <= carPlace) {
-                    if (currentTruckSize + vehicle.getSize() <= carPlace) {
-                    result = parkingSize.add(vehicle);
-                    currentTruckSize += vehicle.getSize();
-                    }
-                }
-            } else if (vehicle.getSize() == Car.SIZE) {
-
-                if (currentCarSize + 1 <= carPlace) {
-                    result = parkingSize.add(vehicle);
-                    currentCarSize++;
-                }
+            if (vehicle.getSize() > Car.SIZE && currentTruckSize + 1 <= truckPlace) {
+                result = parkingSize.add(vehicle);
+                currentTruckSize++;
+            } else if (vehicle.getSize() > Car.SIZE && vehicle.getSize() <= carPlace && currentTruckSize + vehicle.getSize() <= carPlace) {
+                result = parkingSize.add(vehicle);
+                currentTruckSize += vehicle.getSize();
+            } else if (vehicle.getSize() == Car.SIZE && currentCarSize + 1 <= carPlace) {
+                result = parkingSize.add(vehicle);
+                currentCarSize++;
             }
         }
         return result;
     }
-
 
 }
