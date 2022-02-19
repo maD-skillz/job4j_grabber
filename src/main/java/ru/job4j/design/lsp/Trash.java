@@ -14,6 +14,11 @@ public class Trash implements Distributor {
     }
 
     @Override
+    public void clearStorage() {
+        trashStore.clear();
+    }
+
+    @Override
     public boolean accept(Food food) {
         boolean result = false;
         if (percentGet(food) >= 100) {

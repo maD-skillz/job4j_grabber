@@ -14,6 +14,11 @@ public class Shop implements Distributor {
     }
 
     @Override
+    public void clearStorage() {
+        shopStore.clear();
+    }
+
+    @Override
     public boolean accept(Food food) {
         boolean result = false;
         if (percentGet(food) >= 25 && percentGet(food) <= 100) {
@@ -21,8 +26,6 @@ public class Shop implements Distributor {
         }
         return result;
     }
-
-
 
     @Override
     public boolean addFood(Food food) {

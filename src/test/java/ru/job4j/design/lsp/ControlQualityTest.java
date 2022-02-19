@@ -100,20 +100,30 @@ public class ControlQualityTest {
     @Test
     public void whenResortFreshFood() {
         Warehouse warehouse = new Warehouse();
+        Trash trash = new Trash();
         LocalDateTime expired = LocalDateTime.now().plusDays(30);
         LocalDateTime created = LocalDateTime.now().minusDays(5);
         Food tuna = new Tuna("Tuna", expired, created, 150, 0);
+        LocalDateTime expired2 = LocalDateTime.now().minusDays(1);
+        LocalDateTime created2 = LocalDateTime.now().minusDays(30);
+        Food apple = new Apple("Apple", expired2, created2, 70, 0);
         List<Distributor> list = new ArrayList<>();
         list.add(warehouse);
+        list.add(trash);
         ControlQuality cq = new ControlQuality(list);
         cq.distribution(tuna);
-        cq.getFoodFromL(cq.getList(list));
+        cq.distribution(apple);
         cq.resort();
         Food result = null;
+        Food result2 = null;
         for (Food i : warehouse.getCopyOfStore()) {
             result = i;
         }
+        for (Food x : trash.getCopyOfStore()) {
+            result2 = x;
+        }
         assertThat(result, is(tuna));
+        assertThat(result2, is(apple));
     }
 
 }

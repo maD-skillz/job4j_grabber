@@ -18,6 +18,8 @@ public interface Distributor {
     boolean accept(Food food);
 
     boolean addFood(Food food);
+
+    void clearStorage();
 }
 
 
