@@ -97,4 +97,23 @@ public class ControlQualityTest {
         assertThat(result, is(apple));
     }
 
+    @Test
+    public void whenResortFreshFood() {
+        Warehouse warehouse = new Warehouse();
+        LocalDateTime expired = LocalDateTime.now().plusDays(30);
+        LocalDateTime created = LocalDateTime.now().minusDays(5);
+        Food tuna = new Tuna("Tuna", expired, created, 150, 0);
+        List<Distributor> list = new ArrayList<>();
+        list.add(warehouse);
+        ControlQuality cq = new ControlQuality(list);
+        cq.distribution(tuna);
+        cq.getFoodFromL(cq.getList(list));
+        cq.resort();
+        Food result = null;
+        for (Food i : warehouse.getCopyOfStore()) {
+            result = i;
+        }
+        assertThat(result, is(tuna));
+    }
+
 }
